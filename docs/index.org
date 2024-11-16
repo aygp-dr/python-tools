@@ -1,0 +1,28 @@
+#+TITLE: Python Tools Examples
+#+AUTHOR: Generated Setup
+#+DATE: 2024-11-16
+#+PROPERTY: header-args:python :session *Python*
+#+STARTUP: showeverything
+
+* Overview
+This document provides examples of using various Python tools and libraries.
+
+* Development Tools
+#+INCLUDE: "../dev/formatting.org"
+#+INCLUDE: "../dev/testing.org"
+
+* Data Science & Analysis
+#+INCLUDE: "../data/core.org"
+#+INCLUDE: "../data/ml.org"
+
+* Web Development
+#+INCLUDE: "../web/apis.org"
+#+INCLUDE: "../web/clients.org"
+
+* LLM Tools
+#+INCLUDE: "../llm/core.org"
+#+INCLUDE: "../llm/utils.org"
+
+* Developer Utilities
+#+INCLUDE: "../utils/config.org"
+#+INCLUDE: "../utils/data.org"
