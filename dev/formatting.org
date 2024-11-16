@@ -1,0 +1,21 @@
+#+TITLE: Code Formatting Examples
+#+PROPERTY: header-args:python :session *Python*
+
+* Black Code Formatting
+#+begin_src python :results output
+# Example of unformatted code
+def messy_function   (x,y, z    =  42 ):
+    return   x+  y*z
+
+print("Original function:")
+print(messy_function.__code__.co_code)
+
+# Using black programmatically
+import black
+formatted_code = black.format_str("""
+def messy_function   (x,y, z    =  42 ):
+    return   x+  y*z
+""", mode=black.Mode())
+print("\nFormatted by black:")
+print(formatted_code)
+#+end_src
