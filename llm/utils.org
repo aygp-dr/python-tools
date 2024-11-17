@@ -1,0 +1,73 @@
+#+TITLE: LLM Utilities
+#+PROPERTY: header-args:python :session *Python*
+
+* Tokenizers
+Working with tokenization.
+
+#+BEGIN_SRC python
+from tokenizers import Tokenizer
+from tokenizers.models import BPE
+from tokenizers.trainers import BpeTrainer
+from tokenizers.pre_tokenizers import Whitespace
+
+# Initialize a tokenizer
+tokenizer = Tokenizer(BPE(unk_token="[UNK]"))
+tokenizer.pre_tokenizer = Whitespace()
+
+# Example usage
+def tokenize_example():
+    text = "Hello, how are you today?"
+    encoded = tokenizer.encode(text)
+    print(f"Input text: {text}")
+    print(f"Tokens: {encoded.tokens if hasattr(encoded, 'tokens') else 'Need training first'}")
+
+tokenize_example()
+#+END_SRC
+
+* TikToken
+OpenAI's tiktoken for fast tokenization.
+
+#+BEGIN_SRC python
+import tiktoken
+
+def count_tokens():
+    # Get encoding for GPT-3.5-turbo
+    encoding = tiktoken.get_encoding("cl100k_base")
+    
+    # Example text
+    text = "Hello, world! Let's count some tokens."
+    tokens = encoding.encode(text)
+    
+    print(f"Text: {text}")
+    print(f"Token count: {len(tokens)}")
+    print(f"Tokens: {tokens}")
+
+count_tokens()
+#+END_SRC
+
+* Instructor
+Structured outputs for LLMs.
+
+#+BEGIN_SRC python
+from instructor import patch
+from pydantic import BaseModel
+from typing import List
+
+class MovieReview(BaseModel):
+    title: str
+    rating: float
+    pros: List[str]
+    cons: List[str]
+
+def example_structure():
+    print("Example MovieReview structure:")
+    review = MovieReview(
+        title="Example Movie",
+        rating=4.5,
+        pros=["Great acting", "Beautiful cinematography"],
+        cons=["Slow pacing"]
+    )
+    print(review.model_dump_json(indent=2))
+
+example_structure()
+#+END_SRC

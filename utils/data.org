@@ -1,0 +1,78 @@
+#+TITLE: Data Utilities
+#+PROPERTY: header-args:python :session *Python*
+
+* SQLAlchemy
+Database operations with SQLAlchemy.
+
+#+BEGIN_SRC python
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+
+# Create in-memory database
+engine = create_engine('sqlite:///:memory:')
+Base.metadata.create_all(engine)
+
+print("Database schema created")
+print(User.__table__)
+#+END_SRC
+
+* Diskcache
+Disk and file-based cache.
+
+#+BEGIN_SRC python
+from diskcache import Cache
+import time
+
+def expensive_operation(x):
+    time.sleep(1)  # Simulate expensive operation
+    return x * x
+
+# Create cache
+cache = Cache('tmp/cache')
+
+def cached_operation(x):
+    # Get from cache or compute
+    key = f'square_{x}'
+    if key not in cache:
+        cache[key] = expensive_operation(x)
+    return cache[key]
+
+print("Cached operations:")
+print(f"First call: {cached_operation(5)}")
+print(f"Second call (cached): {cached_operation(5)}")
+#+END_SRC
+
+* Arrow
+Date and time utilities.
+
+#+BEGIN_SRC python
+import arrow
+
+# Current time in different formats
+now = arrow.now()
+print(f"Current time: {now}")
+print(f"UTC time: {now.to('UTC')}")
+print(f"Humanized: {now.humanize()}")
+
+# Time manipulation
+future = now.shift(hours=+2)
+past = now.shift(days=-1)
+print(f"\nIn 2 hours: {future.humanize()}")
+print(f"Yesterday: {past.humanize()}")
+
+# Parsing
+date_str = "2024-01-01 13:45:00"
+parsed = arrow.get(date_str)
+print(f"\nParsed date: {parsed}")
+print(f"Formatted: {parsed.format('YYYY-MM-DD HH:mm')}")
+#+END_SRC

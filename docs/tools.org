@@ -1,0 +1,41 @@
+#+TITLE: Python Tools Documentation
+#+AUTHOR: Generated Setup
+#+DATE: 2024-11-16
+
+* Overview
+This document provides examples of using various Python tools and libraries.
+
+* Development Tools
+** Formatting
+{{{include(../dev/formatting.org)}}}
+
+** Testing
+{{{include(../dev/testing.org)}}}
+
+* Data Science & Analysis
+** Core Data Tools
+{{{include(../data/core.org)}}}
+
+** Machine Learning
+{{{include(../data/ml.org)}}}
+
+* Web Development
+** APIs
+{{{include(../web/apis.org)}}}
+
+** Clients
+{{{include(../web/clients.org)}}}
+
+* LLM Tools
+** Core LLM Tools
+{{{include(../llm/core.org)}}}
+
+** LLM Utilities
+{{{include(../llm/utils.org)}}}
+
+* Developer Utilities
+** Configuration
+{{{include(../utils/config.org)}}}
+
+** Data Utilities
+{{{include(../utils/data.org)}}}

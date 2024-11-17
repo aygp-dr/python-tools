@@ -1,0 +1,78 @@
+#+TITLE: Configuration Utilities
+#+PROPERTY: header-args:python :session *Python*
+
+* Python-dotenv
+Environment variable management.
+
+#+BEGIN_SRC python
+from dotenv import load_dotenv
+import os
+
+# Create example .env file
+with open(".env", "w") as f:
+    f.write("API_KEY=example_key\nDEBUG=True")
+
+# Load environment variables
+load_dotenv()
+
+print("Environment variables:")
+print(f"API_KEY: {os.getenv('API_KEY')}")
+print(f"DEBUG: {os.getenv('DEBUG')}")
+#+END_SRC
+
+* Pydantic Settings
+Type-safe configuration management.
+
+#+BEGIN_SRC python
+from pydantic_settings import BaseSettings
+from pydantic import Field
+
+class Settings(BaseSettings):
+    app_name: str = "MyApp"
+    debug: bool = False
+    database_url: str = Field(..., env="DATABASE_URL")
+    api_keys: list[str] = []
+
+def show_settings():
+    try:
+        settings = Settings()
+        print("Settings configuration:")
+        print(settings.model_dump_json(indent=2))
+    except Exception as e:
+        print(f"Configuration error: {e}")
+
+show_settings()
+#+END_SRC
+
+* YAML Configuration
+Working with YAML files.
+
+#+BEGIN_SRC python
+import yaml
+
+# Example configuration
+config = {
+    'server': {
+        'host': 'localhost',
+        'port': 8080
+    },
+    'database': {
+        'url': 'postgresql://localhost/db',
+        'pool_size': 5
+    },
+    'logging': {
+        'level': 'INFO',
+        'file': 'app.log'
+    }
+}
+
+# Write and read YAML
+with open('config.yaml', 'w') as f:
+    yaml.dump(config, f)
+
+with open('config.yaml', 'r') as f:
+    loaded_config = yaml.safe_load(f)
+
+print("YAML Configuration:")
+print(yaml.dump(loaded_config, sort_keys=False))
+#+END_SRC

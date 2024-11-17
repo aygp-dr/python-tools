@@ -1,0 +1,71 @@
+#+TITLE: LLM Core Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* Anthropic Client
+Working with Claude and other Anthropic models.
+
+#+BEGIN_SRC python
+from anthropic import Anthropic
+
+# Initialize client
+anthropic = Anthropic()
+
+# Example message creation
+def example_message():
+    message = {
+        "model": "claude-2",
+        "max_tokens": 100,
+        "messages": [{"role": "user", "content": "What is Python?"}]
+    }
+    print("Message structure:")
+    print(message)
+
+example_message()
+#+END_SRC
+
+* LangChain
+Building applications with LLMs.
+
+#+BEGIN_SRC python
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain_core.output_parsers import StrOutputParser
+
+# Create a prompt template
+prompt = PromptTemplate.from_template(
+    "What is a good name for a company that makes {product}?"
+)
+
+# Example chain structure
+print("Prompt template:")
+print(prompt.format(product="eco-friendly water bottles"))
+
+# Output parser
+parser = StrOutputParser()
+print("\nParser configuration:")
+print(parser)
+#+END_SRC
+
+* Semantic Kernel
+Microsoft's Semantic Kernel framework.
+
+#+BEGIN_SRC python
+import semantic_kernel as sk
+from semantic_kernel.connectors.ai import OpenAITextCompletion
+
+# Initialize kernel
+kernel = sk.Kernel()
+
+# Example semantic function
+def create_semantic_function():
+    prompt_template = """
+    Generate a summary of the following text:
+    {{$input}}
+    Summary:
+    """
+    
+    print("Semantic function template:")
+    print(prompt_template)
+
+create_semantic_function()
+#+END_SRC

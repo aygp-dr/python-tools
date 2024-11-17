@@ -1,0 +1,80 @@
+#+TITLE: Web Clients
+#+PROPERTY: header-args:python :session *Python*
+
+* AIOHTTP
+Asynchronous HTTP Client/Server.
+
+#+BEGIN_SRC python
+import aiohttp
+import asyncio
+
+async def fetch_pages():
+    async with aiohttp.ClientSession() as session:
+        # Fetch multiple pages concurrently
+        urls = [
+            'http://httpbin.org/get',
+            'http://httpbin.org/ip',
+            'http://httpbin.org/headers'
+        ]
+        
+        async def fetch(url):
+            async with session.get(url) as response:
+                return await response.json()
+        
+        tasks = [fetch(url) for url in urls]
+        results = await asyncio.gather(*tasks)
+        return results
+
+print("Fetching multiple pages:")
+results = asyncio.run(fetch_pages())
+print(results)
+#+END_SRC
+
+* Requests
+Synchronous HTTP for Humans.
+
+#+BEGIN_SRC python
+import requests
+
+# Basic GET request
+response = requests.get('https://httpbin.org/get')
+print(f"Status Code: {response.status_code}")
+print(f"Content: {response.json()}")
+
+# POST request with data
+data = {'key': 'value'}
+response = requests.post('https://httpbin.org/post', json=data)
+print("\nPOST response:")
+print(response.json())
+
+# Session usage
+with requests.Session() as session:
+    session.headers.update({'User-Agent': 'Custom User Agent'})
+    response = session.get('https://httpbin.org/headers')
+    print("\nSession headers:")
+    print(response.json())
+#+END_SRC
+
+* Websocket Client
+WebSocket communication.
+
+#+BEGIN_SRC python
+import websocket
+import json
+
+def on_message(ws, message):
+    print(f"Received: {message}")
+
+def on_error(ws, error):
+    print(f"Error: {error}")
+
+def on_close(ws, close_status_code, close_msg):
+    print("Connection closed")
+
+ws = websocket.WebSocketApp("wss://echo.websocket.org",
+                          on_message=on_message,
+                          on_error=on_error,
+                          on_close=on_close)
+
+print("WebSocket client configured")
+#+END_SRC

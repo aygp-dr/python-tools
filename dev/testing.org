@@ -1,0 +1,68 @@
+#+TITLE: Testing Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* Pytest
+Pytest is a powerful testing framework.
+
+#+BEGIN_SRC python
+import pytest
+
+def add_numbers(a, b):
+    return a + b
+
+def test_add_numbers():
+    assert add_numbers(1, 2) == 3
+    assert add_numbers(-1, 1) == 0
+    assert add_numbers(0, 0) == 0
+
+if __name__ == '__main__':
+    pytest.main([__file__])
+#+END_SRC
+
+* Coverage
+Coverage.py measures code coverage during test execution.
+
+#+BEGIN_SRC python
+from coverage import Coverage
+import pytest
+
+def example_function(x):
+    if x > 0:
+        return "positive"
+    elif x < 0:
+        return "negative"
+    else:
+        return "zero"
+
+def test_example():
+    assert example_function(1) == "positive"
+    assert example_function(-1) == "negative"
+    assert example_function(0) == "zero"
+
+# Running with coverage
+cov = Coverage()
+cov.start()
+
+# Run tests
+pytest.main([__file__])
+
+cov.stop()
+cov.save()
+#+END_SRC
+
+* Hypothesis
+Property-based testing with Hypothesis.
+
+#+BEGIN_SRC python
+from hypothesis import given
+import hypothesis.strategies as st
+
+@given(st.integers(), st.integers())
+def test_addition_commutative(x, y):
+    assert x + y == y + x
+
+@given(st.lists(st.integers()))
+def test_list_reversing(xs):
+    # Reversing a list twice gives back the original list
+    assert xs == list(reversed(list(reversed(xs))))
+#+END_SRC

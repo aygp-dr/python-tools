@@ -1,0 +1,693 @@
+#+TITLE: Complete Python Tools Documentation
+#+AUTHOR: Generated Setup
+#+DATE: 2024-11-16
+
+#+TITLE: Code Formatting Examples
+#+PROPERTY: header-args:python :session *Python*
+
+* Black Code Formatting
+#+begin_src python :results output
+# Example of unformatted code
+def messy_function   (x,y, z    =  42 ):
+    return   x+  y*z
+
+print("Original function:")
+print(messy_function.__code__.co_code)
+
+# Using black programmatically
+import black
+formatted_code = black.format_str("""
+def messy_function   (x,y, z    =  42 ):
+    return   x+  y*z
+""", mode=black.Mode())
+print("\nFormatted by black:")
+print(formatted_code)
+#+end_src
+
+
+#+TITLE: Testing Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* Pytest
+Pytest is a powerful testing framework.
+
+#+BEGIN_SRC python
+import pytest
+
+def add_numbers(a, b):
+    return a + b
+
+def test_add_numbers():
+    assert add_numbers(1, 2) == 3
+    assert add_numbers(-1, 1) == 0
+    assert add_numbers(0, 0) == 0
+
+if __name__ == '__main__':
+    pytest.main([__file__])
+#+END_SRC
+
+* Coverage
+Coverage.py measures code coverage during test execution.
+
+#+BEGIN_SRC python
+from coverage import Coverage
+import pytest
+
+def example_function(x):
+    if x > 0:
+        return "positive"
+    elif x < 0:
+        return "negative"
+    else:
+        return "zero"
+
+def test_example():
+    assert example_function(1) == "positive"
+    assert example_function(-1) == "negative"
+    assert example_function(0) == "zero"
+
+# Running with coverage
+cov = Coverage()
+cov.start()
+
+# Run tests
+pytest.main([__file__])
+
+cov.stop()
+cov.save()
+#+END_SRC
+
+* Hypothesis
+Property-based testing with Hypothesis.
+
+#+BEGIN_SRC python
+from hypothesis import given
+import hypothesis.strategies as st
+
+@given(st.integers(), st.integers())
+def test_addition_commutative(x, y):
+    assert x + y == y + x
+
+@given(st.lists(st.integers()))
+def test_list_reversing(xs):
+    # Reversing a list twice gives back the original list
+    assert xs == list(reversed(list(reversed(xs))))
+#+END_SRC
+
+#+TITLE: Data Science Core Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* NumPy
+Basic array operations with NumPy.
+
+#+BEGIN_SRC python
+import numpy as np
+
+# Create arrays
+arr1 = np.array([1, 2, 3, 4, 5])
+arr2 = np.array([6, 7, 8, 9, 10])
+
+print("Basic operations:")
+print(f"Sum: {arr1 + arr2}")
+print(f"Mean: {arr1.mean()}")
+print(f"Standard deviation: {arr1.std()}")
+
+# Matrix operations
+matrix = np.array([[1, 2], [3, 4]])
+print("\nMatrix operations:")
+print(f"Determinant: {np.linalg.det(matrix)}")
+print(f"Transpose: \n{matrix.T}")
+#+END_SRC
+
+* Pandas
+Data manipulation with Pandas.
+
+#+BEGIN_SRC python
+import pandas as pd
+
+# Create a DataFrame
+data = {
+    'Name': ['John', 'Emma', 'Alex'],
+    'Age': [25, 30, 35],
+    'City': ['New York', 'London', 'Paris']
+}
+df = pd.DataFrame(data)
+
+print("DataFrame operations:")
+print(df)
+print("\nBasic statistics:")
+print(df.describe())
+
+# Data filtering
+print("\nFiltered data (Age > 28):")
+print(df[df['Age'] > 28])
+#+END_SRC
+
+* Arrow
+Working with Apache Arrow.
+
+#+BEGIN_SRC python
+import pyarrow as pa
+import pyarrow.compute as pc
+
+# Create Arrow array
+data = [1, 2, 3, 4, 5]
+arr = pa.array(data)
+
+# Compute operations
+print(f"Sum: {pc.sum(arr).as_py()}")
+print(f"Mean: {pc.mean(arr).as_py()}")
+
+# Create Table
+table = pa.Table.from_arrays(
+    [pa.array([1, 2, 3]), pa.array(['a', 'b', 'c'])],
+    names=['numbers', 'letters']
+)
+print("\nArrow Table:")
+print(table)
+#+END_SRC
+
+#+TITLE: Machine Learning Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* PyTorch
+Basic PyTorch operations and neural networks.
+
+#+BEGIN_SRC python
+import torch
+import torch.nn as nn
+
+# Create tensors
+x = torch.tensor([[1., 2.], [3., 4.]])
+y = torch.tensor([[5., 6.], [7., 8.]])
+
+print("Basic operations:")
+print(f"Addition:\n{x + y}")
+print(f"Matrix multiplication:\n{torch.mm(x, y)}")
+
+# Simple neural network
+class SimpleNN(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.linear = nn.Linear(2, 1)
+        
+    def forward(self, x):
+        return self.linear(x)
+
+model = SimpleNN()
+print("\nNeural Network:")
+print(model)
+#+END_SRC
+
+* Transformers
+Working with Hugging Face Transformers.
+
+#+BEGIN_SRC python
+from transformers import pipeline
+
+# Text generation
+generator = pipeline('text-generation', model='gpt2')
+prompt = "Once upon a time"
+print("Generated text:")
+print(generator(prompt, max_length=30, num_return_sequences=1)[0]['generated_text'])
+
+# Sentiment analysis
+classifier = pipeline('sentiment-analysis')
+text = "I love working with Python!"
+print("\nSentiment analysis:")
+print(classifier(text))
+#+END_SRC
+
+* Optimum
+Optimizing machine learning models.
+
+#+BEGIN_SRC python
+from optimum.pipelines import pipeline
+from transformers import AutoTokenizer
+
+# Load tokenizer
+tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+
+# Create optimized pipeline
+classifier = pipeline(
+    "text-classification",
+    model="bert-base-uncased",
+    tokenizer=tokenizer
+)
+
+# Example classification
+text = "This is a test sentence."
+result = classifier(text)
+print("Classification result:")
+print(result)
+#+END_SRC
+
+#+TITLE: Web API Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* FastAPI
+Creating REST APIs with FastAPI.
+
+#+BEGIN_SRC python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class Item(BaseModel):
+    name: str
+    price: float
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
+
+print("FastAPI application structure:")
+print(app.routes)
+#+END_SRC
+
+* Starlette
+ASGI framework capabilities.
+
+#+BEGIN_SRC python
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+
+app = Starlette(routes=[
+    Route('/', homepage)
+])
+
+print("Starlette routes:")
+print(app.routes)
+#+END_SRC
+
+* HTTPX
+Modern HTTP client.
+
+#+BEGIN_SRC python
+import httpx
+import asyncio
+
+async def fetch_data():
+    async with httpx.AsyncClient() as client:
+        response = await client.get('https://httpbin.org/json')
+        return response.json()
+
+print("HTTP request example:")
+result = asyncio.run(fetch_data())
+print(result)
+#+END_SRC
+
+#+TITLE: Web Clients
+#+PROPERTY: header-args:python :session *Python*
+
+* AIOHTTP
+Asynchronous HTTP Client/Server.
+
+#+BEGIN_SRC python
+import aiohttp
+import asyncio
+
+async def fetch_pages():
+    async with aiohttp.ClientSession() as session:
+        # Fetch multiple pages concurrently
+        urls = [
+            'http://httpbin.org/get',
+            'http://httpbin.org/ip',
+            'http://httpbin.org/headers'
+        ]
+        
+        async def fetch(url):
+            async with session.get(url) as response:
+                return await response.json()
+        
+        tasks = [fetch(url) for url in urls]
+        results = await asyncio.gather(*tasks)
+        return results
+
+print("Fetching multiple pages:")
+results = asyncio.run(fetch_pages())
+print(results)
+#+END_SRC
+
+* Requests
+Synchronous HTTP for Humans.
+
+#+BEGIN_SRC python
+import requests
+
+# Basic GET request
+response = requests.get('https://httpbin.org/get')
+print(f"Status Code: {response.status_code}")
+print(f"Content: {response.json()}")
+
+# POST request with data
+data = {'key': 'value'}
+response = requests.post('https://httpbin.org/post', json=data)
+print("\nPOST response:")
+print(response.json())
+
+# Session usage
+with requests.Session() as session:
+    session.headers.update({'User-Agent': 'Custom User Agent'})
+    response = session.get('https://httpbin.org/headers')
+    print("\nSession headers:")
+    print(response.json())
+#+END_SRC
+
+* Websocket Client
+WebSocket communication.
+
+#+BEGIN_SRC python
+import websocket
+import json
+
+def on_message(ws, message):
+    print(f"Received: {message}")
+
+def on_error(ws, error):
+    print(f"Error: {error}")
+
+def on_close(ws, close_status_code, close_msg):
+    print("Connection closed")
+
+ws = websocket.WebSocketApp("wss://echo.websocket.org",
+                          on_message=on_message,
+                          on_error=on_error,
+                          on_close=on_close)
+
+print("WebSocket client configured")
+#+END_SRC
+
+#+TITLE: LLM Core Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* Anthropic Client
+Working with Claude and other Anthropic models.
+
+#+BEGIN_SRC python
+from anthropic import Anthropic
+
+# Initialize client
+anthropic = Anthropic()
+
+# Example message creation
+def example_message():
+    message = {
+        "model": "claude-2",
+        "max_tokens": 100,
+        "messages": [{"role": "user", "content": "What is Python?"}]
+    }
+    print("Message structure:")
+    print(message)
+
+example_message()
+#+END_SRC
+
+* LangChain
+Building applications with LLMs.
+
+#+BEGIN_SRC python
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain_core.output_parsers import StrOutputParser
+
+# Create a prompt template
+prompt = PromptTemplate.from_template(
+    "What is a good name for a company that makes {product}?"
+)
+
+# Example chain structure
+print("Prompt template:")
+print(prompt.format(product="eco-friendly water bottles"))
+
+# Output parser
+parser = StrOutputParser()
+print("\nParser configuration:")
+print(parser)
+#+END_SRC
+
+* Semantic Kernel
+Microsoft's Semantic Kernel framework.
+
+#+BEGIN_SRC python
+import semantic_kernel as sk
+from semantic_kernel.connectors.ai import OpenAITextCompletion
+
+# Initialize kernel
+kernel = sk.Kernel()
+
+# Example semantic function
+def create_semantic_function():
+    prompt_template = """
+    Generate a summary of the following text:
+    {{$input}}
+    Summary:
+    """
+    
+    print("Semantic function template:")
+    print(prompt_template)
+
+create_semantic_function()
+#+END_SRC
+
+#+TITLE: LLM Utilities
+#+PROPERTY: header-args:python :session *Python*
+
+* Tokenizers
+Working with tokenization.
+
+#+BEGIN_SRC python
+from tokenizers import Tokenizer
+from tokenizers.models import BPE
+from tokenizers.trainers import BpeTrainer
+from tokenizers.pre_tokenizers import Whitespace
+
+# Initialize a tokenizer
+tokenizer = Tokenizer(BPE(unk_token="[UNK]"))
+tokenizer.pre_tokenizer = Whitespace()
+
+# Example usage
+def tokenize_example():
+    text = "Hello, how are you today?"
+    encoded = tokenizer.encode(text)
+    print(f"Input text: {text}")
+    print(f"Tokens: {encoded.tokens if hasattr(encoded, 'tokens') else 'Need training first'}")
+
+tokenize_example()
+#+END_SRC
+
+* TikToken
+OpenAI's tiktoken for fast tokenization.
+
+#+BEGIN_SRC python
+import tiktoken
+
+def count_tokens():
+    # Get encoding for GPT-3.5-turbo
+    encoding = tiktoken.get_encoding("cl100k_base")
+    
+    # Example text
+    text = "Hello, world! Let's count some tokens."
+    tokens = encoding.encode(text)
+    
+    print(f"Text: {text}")
+    print(f"Token count: {len(tokens)}")
+    print(f"Tokens: {tokens}")
+
+count_tokens()
+#+END_SRC
+
+* Instructor
+Structured outputs for LLMs.
+
+#+BEGIN_SRC python
+from instructor import patch
+from pydantic import BaseModel
+from typing import List
+
+class MovieReview(BaseModel):
+    title: str
+    rating: float
+    pros: List[str]
+    cons: List[str]
+
+def example_structure():
+    print("Example MovieReview structure:")
+    review = MovieReview(
+        title="Example Movie",
+        rating=4.5,
+        pros=["Great acting", "Beautiful cinematography"],
+        cons=["Slow pacing"]
+    )
+    print(review.model_dump_json(indent=2))
+
+example_structure()
+#+END_SRC
+
+#+TITLE: Configuration Utilities
+#+PROPERTY: header-args:python :session *Python*
+
+* Python-dotenv
+Environment variable management.
+
+#+BEGIN_SRC python
+from dotenv import load_dotenv
+import os
+
+# Create example .env file
+with open(".env", "w") as f:
+    f.write("API_KEY=example_key\nDEBUG=True")
+
+# Load environment variables
+load_dotenv()
+
+print("Environment variables:")
+print(f"API_KEY: {os.getenv('API_KEY')}")
+print(f"DEBUG: {os.getenv('DEBUG')}")
+#+END_SRC
+
+* Pydantic Settings
+Type-safe configuration management.
+
+#+BEGIN_SRC python
+from pydantic_settings import BaseSettings
+from pydantic import Field
+
+class Settings(BaseSettings):
+    app_name: str = "MyApp"
+    debug: bool = False
+    database_url: str = Field(..., env="DATABASE_URL")
+    api_keys: list[str] = []
+
+def show_settings():
+    try:
+        settings = Settings()
+        print("Settings configuration:")
+        print(settings.model_dump_json(indent=2))
+    except Exception as e:
+        print(f"Configuration error: {e}")
+
+show_settings()
+#+END_SRC
+
+* YAML Configuration
+Working with YAML files.
+
+#+BEGIN_SRC python
+import yaml
+
+# Example configuration
+config = {
+    'server': {
+        'host': 'localhost',
+        'port': 8080
+    },
+    'database': {
+        'url': 'postgresql://localhost/db',
+        'pool_size': 5
+    },
+    'logging': {
+        'level': 'INFO',
+        'file': 'app.log'
+    }
+}
+
+# Write and read YAML
+with open('config.yaml', 'w') as f:
+    yaml.dump(config, f)
+
+with open('config.yaml', 'r') as f:
+    loaded_config = yaml.safe_load(f)
+
+print("YAML Configuration:")
+print(yaml.dump(loaded_config, sort_keys=False))
+#+END_SRC
+
+#+TITLE: Data Utilities
+#+PROPERTY: header-args:python :session *Python*
+
+* SQLAlchemy
+Database operations with SQLAlchemy.
+
+#+BEGIN_SRC python
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+
+# Create in-memory database
+engine = create_engine('sqlite:///:memory:')
+Base.metadata.create_all(engine)
+
+print("Database schema created")
+print(User.__table__)
+#+END_SRC
+
+* Diskcache
+Disk and file-based cache.
+
+#+BEGIN_SRC python
+from diskcache import Cache
+import time
+
+def expensive_operation(x):
+    time.sleep(1)  # Simulate expensive operation
+    return x * x
+
+# Create cache
+cache = Cache('tmp/cache')
+
+def cached_operation(x):
+    # Get from cache or compute
+    key = f'square_{x}'
+    if key not in cache:
+        cache[key] = expensive_operation(x)
+    return cache[key]
+
+print("Cached operations:")
+print(f"First call: {cached_operation(5)}")
+print(f"Second call (cached): {cached_operation(5)}")
+#+END_SRC
+
+* Arrow
+Date and time utilities.
+
+#+BEGIN_SRC python
+import arrow
+
+# Current time in different formats
+now = arrow.now()
+print(f"Current time: {now}")
+print(f"UTC time: {now.to('UTC')}")
+print(f"Humanized: {now.humanize()}")
+
+# Time manipulation
+future = now.shift(hours=+2)
+past = now.shift(days=-1)
+print(f"\nIn 2 hours: {future.humanize()}")
+print(f"Yesterday: {past.humanize()}")
+
+# Parsing
+date_str = "2024-01-01 13:45:00"
+parsed = arrow.get(date_str)
+print(f"\nParsed date: {parsed}")
+print(f"Formatted: {parsed.format('YYYY-MM-DD HH:mm')}")
+#+END_SRC
+

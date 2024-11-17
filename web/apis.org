@@ -1,0 +1,63 @@
+#+TITLE: Web API Tools
+#+PROPERTY: header-args:python :session *Python*
+
+* FastAPI
+Creating REST APIs with FastAPI.
+
+#+BEGIN_SRC python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class Item(BaseModel):
+    name: str
+    price: float
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
+
+print("FastAPI application structure:")
+print(app.routes)
+#+END_SRC
+
+* Starlette
+ASGI framework capabilities.
+
+#+BEGIN_SRC python
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+
+app = Starlette(routes=[
+    Route('/', homepage)
+])
+
+print("Starlette routes:")
+print(app.routes)
+#+END_SRC
+
+* HTTPX
+Modern HTTP client.
+
+#+BEGIN_SRC python
+import httpx
+import asyncio
+
+async def fetch_data():
+    async with httpx.AsyncClient() as client:
+        response = await client.get('https://httpbin.org/json')
+        return response.json()
+
+print("HTTP request example:")
+result = asyncio.run(fetch_data())
+print(result)
+#+END_SRC
