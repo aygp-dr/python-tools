@@ -2,10 +2,46 @@
 #+AUTHOR: Generated Setup
 #+DATE: 2024-11-16
 
-#+TITLE: Code Formatting Examples
-#+PROPERTY: header-args:python :session *Python*
+* Core Infrastructure Tools
+** Accelerate
+Hugging Face Accelerate library for distributed training.
 
-* Black Code Formatting
+** Azure SDK
+- azure-core: Core functionality for Azure
+- azure-identity: Authentication for Azure services
+
+** AWS SDK
+- boto3: AWS SDK for Python
+- botocore: Low-level AWS functionality
+
+** OpenAPI Tools
+- openapi-core: Client/server validation
+- openapi-spec-validator: OpenAPI/Swagger validation
+
+** OpenTelemetry
+- opentelemetry-api: Observability framework
+- opentelemetry-sdk: Implementation
+- opentelemetry-semantic-conventions: Standard names
+
+* Development Tools
+** Interactive Development
+*** Jupyter
+- jupyter: Core metapackage
+- jupyterlab: Next-generation interface
+- jupyter-server: Backend services
+- notebook: Classic notebook interface
+- ipykernel: IPython kernel
+- ipywidgets: Interactive widgets
+
+** Documentation
+*** MkDocs
+- mkdocs: Project documentation with Markdown
+- mkdocs-material: Material theme
+- mkdocs-autorefs: Automatic references
+- mkdocstrings: API documentation
+
+** Code Quality
+*** Black
 #+begin_src python :results output
 # Example of unformatted code
 def messy_function   (x,y, z    =  42 ):
@@ -289,7 +325,17 @@ print("Starlette routes:")
 print(app.routes)
 #+END_SRC
 
-* HTTPX
+* Web Framework Tools
+** ASGI Servers
+*** Uvicorn
+High-performance ASGI server implementation.
+
+** WSGI Tools
+*** Werkzeug
+Comprehensive WSGI web application library.
+
+* HTTP Clients
+** HTTPX
 Modern HTTP client.
 
 #+BEGIN_SRC python
